@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: label-mutate
+  name: label-mutate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: label-mutate
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: label-mutate
+    spec:
+      volumes:
+        - name: label-mutate-volume
+          secret:
+            secretName: label-mutate-tls
+      containers:
+      - image: label-mutate:v2.1
+        name: label-mutate
+        volumeMounts:
+          - name: label-mutate-volume
+            readOnly: true
+            mountPath: "/app/tls"
+        env:
+          - name: KEY_LOCATION 
+            valueFrom:
+              configMapKeyRef:
+                name: label-mutate-cm
+                key: key-loc
+          - name: CERT_LOCATION 
+            valueFrom:
+              configMapKeyRef:
+                name: label-mutate-cm
+                key: cert-loc 
+          

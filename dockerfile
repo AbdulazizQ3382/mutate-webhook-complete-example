@@ -12,4 +12,5 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /label-mutate
 
 CMD ["/label-mutate"]
 
+EXPOSE 4567
 

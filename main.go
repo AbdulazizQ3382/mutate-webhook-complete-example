@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	v1 "k8s.io/api/admission/v1"
 	"k8s.io/api/admission/v1beta1"
@@ -116,8 +117,8 @@ func serve(w http.ResponseWriter, r *http.Request, admit admitHandler) {
 
 func main() {
 
-	flag.StringVar(&tlscert, "tlscert", "./tls/label-mutate.cert", "Path to the TLS certificate")
-	flag.StringVar(&tlskey, "tlskey", "./tls/label-mutate.key", "Path to the TLS key")
+	flag.StringVar(&tlscert, "tlscert", os.Getenv("CERT_LOCATION"), "Path to the TLS certificate")
+	flag.StringVar(&tlskey, "tlskey", os.Getenv("KEY_LOCATION"), "Path to the TLS key")
 
 	config := Config{
 		CertFile: tlscert,
